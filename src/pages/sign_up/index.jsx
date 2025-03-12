@@ -1,0 +1,119 @@
+import React, { useEffect, useState } from "react";
+
+function Sign_Up() {
+  const [statusHide, setStatusHide] = useState(true);
+
+  const click_pass = () => {
+    setStatusHide(statusHide == true ? false : true);
+  };
+
+  useEffect(() => {
+    document.title = "Registrasi";
+  }, []);
+  return (
+    <>
+      <div className="flex w-full justify-center">
+        <div className="relative w-4/12">
+          <p className="text-xl font-semibold text-center">Membuat Akun</p>
+          <p className="text-sm text-center mb-6">
+            Sudah punya akun?
+            <a href="/sign-in" className="underline underline-offset-2">
+              masuk
+            </a>
+          </p>
+
+          <form className="flex flex-col">
+            <label for="fullname" className="text-left text-sm opacity-60">
+              Nama Lengkap:
+            </label>
+            <input
+              className="border-2 border-solid rounded-xl pl-4 mb-3 h-10 text-sm"
+              type="text"
+              name="fullname"
+              placeholder="Ketik Nama Lengkap Disini"
+              required
+            />
+
+            <label for="email" className="text-left text-sm opacity-60">
+              Email:
+            </label>
+            <input
+              className="border-2 border-solid rounded-xl pl-4 mb-3 h-10 text-sm"
+              type="email"
+              name="email"
+              placeholder="Ketik Email Disini"
+              required
+            />
+
+            <div className="flex justify-between">
+              <label for="password" className="text-left text-sm opacity-60">
+                Password:
+              </label>
+              <div className="text-xs opacity-60" onClick={click_pass}>
+                {statusHide ? (
+                  <div>
+                    <i className="fa-solid fa-eye text-xs"></i> Unhide
+                  </div>
+                ) : (
+                  <div>
+                    <i className="fa-solid fa-eye-slash text-xs"></i> Hide
+                  </div>
+                )}
+              </div>
+            </div>
+            <input
+              className="border-2 border-solid rounded-xl pl-4 h-10 text-sm"
+              type={statusHide ? "password" : "text"}
+              name="password"
+              id="password"
+              placeholder="Ketik Password Disini"
+              required
+            />
+
+            <p className="text-left mb-3 text-xs text-[#666666]">
+              *minimal 8 karakter berisi huruf, angka & simbol
+            </p>
+
+            <label
+              for="confirm_password"
+              className="text-left text-sm opacity-60"
+            >
+              Konfirmasi Password:
+            </label>
+            <input
+              className="border-2 border-solid rounded-xl pl-4 mb-3 h-10 text-sm"
+              type="password"
+              name="confirm_password"
+              id="confirm_password"
+              placeholder="Ketik Konfirmasi Password Disini"
+              required
+            />
+
+            <button className="bg-[#C4C4C4] rounded-3xl mt-7 h-10 text-[#FFFF] font-semibold">
+              Buat Akun
+            </button>
+          </form>
+
+          <div className="flex items-center text-center my-6 ">
+            <hr className="grow border-solid border-1" />
+            <span>OR</span>
+            <hr className="grow border-solid border-1" />
+          </div>
+
+          <div className="flex rounded-xl justify-center">
+            <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full shadow-sm hover:bg-gray-100">
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google Logo"
+                className="w-5 h-5"
+              />
+              <span>Continue with Google</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Sign_Up;
