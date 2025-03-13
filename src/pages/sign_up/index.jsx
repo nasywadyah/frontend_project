@@ -13,40 +13,49 @@ function Sign_Up() {
   return (
     <>
       <div className="flex w-full justify-center">
-        <div className="relative w-4/12">
+        <div className=" bg-white p-6 rounded-lg shadow-lg w-96">
           <p className="text-xl font-semibold text-center">Membuat Akun</p>
           <p className="text-sm text-center mb-6">
-            Sudah punya akun?
+            Sudah punya akun?{" "}
             <a href="/sign-in" className="underline underline-offset-2">
-              masuk
+              Masuk
             </a>
           </p>
 
           <form className="flex flex-col">
-            <label for="fullname" className="text-left text-sm opacity-60">
+            <label
+              for="fullname"
+              className="text-left block text-gray-700 font-medium text-sm"
+            >
               Nama Lengkap:
             </label>
             <input
-              className="border-2 border-solid rounded-xl pl-4 mb-3 h-10 text-sm"
+              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="text"
               name="fullname"
-              placeholder="Ketik Nama Lengkap Disini"
+              placeholder="Masukkan Nama Lengkap"
               required
             />
 
-            <label for="email" className="text-left text-sm opacity-60">
+            <label
+              for="email"
+              className="text-left block text-gray-700 font-medium text-sm"
+            >
               Email:
             </label>
             <input
-              className="border-2 border-solid rounded-xl pl-4 mb-3 h-10 text-sm"
+              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="email"
               name="email"
-              placeholder="Ketik Email Disini"
+              placeholder="Masukkan Email"
               required
             />
 
             <div className="flex justify-between">
-              <label for="password" className="text-left text-sm opacity-60">
+              <label
+                for="password"
+                className="text-left block text-gray-700 font-medium text-sm"
+              >
                 Password:
               </label>
               <div className="text-xs opacity-60" onClick={click_pass}>
@@ -62,11 +71,11 @@ function Sign_Up() {
               </div>
             </div>
             <input
-              className="border-2 border-solid rounded-xl pl-4 h-10 text-sm"
+              className="border-2 border-solid rounded-lg pl-4 h-10 text-sm"
               type={statusHide ? "password" : "text"}
               name="password"
               id="password"
-              placeholder="Ketik Password Disini"
+              placeholder="Masukkan Password"
               required
             />
 
@@ -76,20 +85,20 @@ function Sign_Up() {
 
             <label
               for="confirm_password"
-              className="text-left text-sm opacity-60"
+              className="text-left block text-gray-700 font-medium text-sm"
             >
               Konfirmasi Password:
             </label>
             <input
-              className="border-2 border-solid rounded-xl pl-4 mb-3 h-10 text-sm"
+              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="password"
               name="confirm_password"
               id="confirm_password"
-              placeholder="Ketik Konfirmasi Password Disini"
+              placeholder="Masukkan Konfirmasi Password"
               required
             />
 
-            <button className="bg-[#C4C4C4] rounded-3xl mt-7 h-10 text-[#FFFF] font-semibold">
+            <button className="bg-blue-500 hover:bg-blue-600 rounded-lg mt-7 h-10 text-[#FFFF] font-semibold">
               Buat Akun
             </button>
           </form>
@@ -100,7 +109,7 @@ function Sign_Up() {
             <hr className="grow border-solid border-1" />
           </div>
 
-          <div className="flex rounded-xl justify-center">
+          <div className="flex rounded-lg justify-center">
             <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full shadow-sm hover:bg-gray-100">
               <img
                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
