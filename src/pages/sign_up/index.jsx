@@ -14,11 +14,11 @@ function Sign_Up() {
     <>
       <div className="flex w-full justify-center">
         <div className=" bg-white p-6 rounded-lg shadow-lg w-96">
-          <p className="text-xl font-semibold text-center">Membuat Akun</p>
+          <p className="text-xl font-semibold text-center">Create an Account</p>
           <p className="text-sm text-center mb-6">
-            Sudah punya akun?{" "}
+            Already have an account?{" "}
             <a href="/sign-in" className="underline underline-offset-2">
-              Masuk
+              Log in
             </a>
           </p>
 
@@ -27,13 +27,13 @@ function Sign_Up() {
               for="fullname"
               className="text-left block text-gray-700 font-medium text-sm"
             >
-              Nama Lengkap:
+              Full Name:
             </label>
             <input
               className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="text"
               name="fullname"
-              placeholder="Masukkan Nama Lengkap"
+              placeholder="Enter Your Full Name"
               required
             />
 
@@ -47,7 +47,7 @@ function Sign_Up() {
               className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="email"
               name="email"
-              placeholder="Masukkan Email"
+              placeholder="Enter Your Email"
               required
             />
 
@@ -75,31 +75,31 @@ function Sign_Up() {
               type={statusHide ? "password" : "text"}
               name="password"
               id="password"
-              placeholder="Masukkan Password"
+              placeholder="Enter Your Password"
               required
             />
 
             <p className="text-left mb-3 text-xs text-[#666666]">
-              *minimal 8 karakter berisi huruf, angka & simbol
+              *Use 8 or more characters with a mix of letters, numbers & symbols
             </p>
 
             <label
               for="confirm_password"
               className="text-left block text-gray-700 font-medium text-sm"
             >
-              Konfirmasi Password:
+              Confirm Password:
             </label>
             <input
               className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="password"
               name="confirm_password"
               id="confirm_password"
-              placeholder="Masukkan Konfirmasi Password"
+              placeholder="Enter Your Confirm Password"
               required
             />
 
             <button className="bg-blue-500 hover:bg-blue-600 rounded-lg mt-7 h-10 text-[#FFFF] font-semibold">
-              Buat Akun
+              Create an Account
             </button>
           </form>
 
