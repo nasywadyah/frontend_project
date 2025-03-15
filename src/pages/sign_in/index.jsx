@@ -9,7 +9,7 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    document.title = "Sign In";
+    document.title = "Bugdetin";
   }, []);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [passwordVisible, setPasswordVisible] = useState(false);

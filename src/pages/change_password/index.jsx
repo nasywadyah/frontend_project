@@ -8,7 +8,7 @@ function ChangePassword() {
   };
 
   useEffect(() => {
-    document.title = "Change Password";
+    document.title = "Bugdetin";
   }, []);
   return (
     <>
@@ -52,7 +52,7 @@ function ChangePassword() {
             />
 
             <p className="text-left mb-3 text-xs text-[#666666]">
-              *Use 8 or more characters with a mix of letters, numbers & symbols
+              *Use 8 or more characters with a mix of letters & numbers
             </p>
             <div className="flex justify-between">
               <label
