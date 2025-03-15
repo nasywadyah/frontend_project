@@ -74,11 +74,11 @@ const LoginForm = () => {
               <label className=" text-left block text-gray-700 font-medium text-sm mb-2">Password:</label>
               <div className="text-xs opacity-60" onClick={click_pass}>
                 {statusHide ? (
-                  <div>
+                  <div className="cursor-pointer" onClick={() => setpasswordVisible(true)}>
                     <i className="fa-solid fa-eye text-xs"></i> Unhide
                   </div>
                 ) : (
-                  <div>
+                  <div className="cursor-pointer" onClick={() => setpasswordVisible(false)}>
                     <i className="fa-solid fa-eye-slash text-xs"></i> Hide
                   </div>
                 )}
@@ -93,8 +93,9 @@ const LoginForm = () => {
           </div>
           {/* Tombol Login */}
           <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
-            Login
+            {isLoading ? "Loading..." : "Login"}
           </button>
+          {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         </form>
 
         {/* Atau */}
