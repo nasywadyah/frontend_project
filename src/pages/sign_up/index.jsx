@@ -13,49 +13,28 @@ function Sign_Up() {
   return (
     <>
       <div className="flex w-full justify-center">
-        <div className=" bg-white p-6 rounded-lg shadow-lg w-96">
+        <div className=" bg-white p-8 rounded-lg shadow-lg w-96">
           <p className="text-xl font-semibold text-center">Create an Account</p>
           <p className="text-sm text-center mb-6">
             Already have an account?{" "}
-            <a href="/sign-in" className="underline underline-offset-2">
+            <a href="/sign-in" className="underline underline-offset-2 text-blue-600 cursor-pointer">
               Log in
             </a>
           </p>
 
           <form className="flex flex-col">
-            <label
-              for="fullname"
-              className="text-left block text-gray-700 font-medium text-sm"
-            >
+            <label for="fullname" className="text-left block text-gray-700 font-medium text-sm">
               Full Name:
             </label>
-            <input
-              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
-              type="text"
-              name="fullname"
-              placeholder="Enter Your Full Name"
-              required
-            />
+            <input className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm " type="text" name="fullname" placeholder="Enter Your Full Name" required />
 
-            <label
-              for="email"
-              className="text-left block text-gray-700 font-medium text-sm"
-            >
+            <label for="email" className="text-left block text-gray-700 font-medium text-sm">
               Email:
             </label>
-            <input
-              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
-              type="email"
-              name="email"
-              placeholder="Enter Your Email"
-              required
-            />
+            <input className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm " type="email" name="email" placeholder="Enter Your Email" required />
 
             <div className="flex justify-between">
-              <label
-                for="password"
-                className="text-left block text-gray-700 font-medium text-sm"
-              >
+              <label for="password" className="text-left block text-gray-700 font-medium text-sm">
                 Password:
               </label>
               <div className="text-xs opacity-60" onClick={click_pass}>
@@ -70,37 +49,16 @@ function Sign_Up() {
                 )}
               </div>
             </div>
-            <input
-              className="border-2 border-solid rounded-lg pl-4 h-10 text-sm"
-              type={statusHide ? "password" : "text"}
-              name="password"
-              id="password"
-              placeholder="Enter Your Password"
-              required
-            />
+            <input className="border-2 border-solid rounded-lg pl-4 h-10 text-sm " type={statusHide ? "password" : "text"} name="password" id="password" placeholder="Enter Your Password" required />
 
-            <p className="text-left mb-3 text-xs text-[#666666]">
-              *Use 8 or more characters with a mix of letters, numbers & symbols
-            </p>
+            <p className="text-left mb-3 text-xs text-[#666666]">*Use 8 or more characters with a mix of letters, numbers & symbols</p>
 
-            <label
-              for="confirm_password"
-              className="text-left block text-gray-700 font-medium text-sm"
-            >
+            <label for="confirm_password" className="text-left block text-gray-700 font-medium text-sm">
               Confirm Password:
             </label>
-            <input
-              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
-              type="password"
-              name="confirm_password"
-              id="confirm_password"
-              placeholder="Enter Your Confirm Password"
-              required
-            />
+            <input className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm " type="password" name="confirm_password" id="confirm_password" placeholder="Enter Your Confirm Password" required />
 
-            <button className="bg-blue-500 hover:bg-blue-600 rounded-lg mt-7 h-10 text-[#FFFF] font-semibold">
-              Create an Account
-            </button>
+            <button className="bg-blue-500 hover:bg-blue-600 rounded-lg mt-7 h-10 text-[#FFFF] font-semibold">Create an Account</button>
           </form>
 
           <div className="flex items-center text-center my-6 ">
@@ -111,11 +69,7 @@ function Sign_Up() {
 
           <div className="flex rounded-lg justify-center">
             <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full shadow-sm hover:bg-gray-100">
-              <img
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Google Logo"
-                className="w-5 h-5"
-              />
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" className="w-5 h-5" />
               <span>Continue with Google</span>
             </button>
           </div>
