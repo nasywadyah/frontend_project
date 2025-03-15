@@ -16,7 +16,7 @@ export const handleLogin = async (email, password) => {
       email,
       password,
     });
-    return response.data; // Mengembalikan data respons
+    return response.data;
   } catch (error) {
     console.error("Login Error:", error);
     throw error.response?.data?.message || "Login failed, please try again.";
