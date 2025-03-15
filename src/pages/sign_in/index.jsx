@@ -13,7 +13,7 @@ const LoginForm = () => {
 
   // Set judul halaman
   useEffect(() => {
-    document.title = "Sign In";
+    document.title = "Bugdetin";
   }, []);
 
   // Toggle visibility password
