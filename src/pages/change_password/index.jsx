@@ -17,7 +17,7 @@ function ChangePassword() {
           <p className="text-xl font-semibold text-center">
             Set a New Password
           </p>
-          <p className="text-sm text-center mb-8">
+          <p className="text-sm text-center mb-8 text-gray-500">
             Create a new password. Ensure it differs from previous ones for
             security
           </p>

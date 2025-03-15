@@ -15,7 +15,7 @@ function Sign_Up() {
       <div className="flex w-full justify-center">
         <div className=" bg-white p-8 rounded-lg shadow-lg w-96">
           <p className="text-xl font-semibold text-center">Create an Account</p>
-          <p className="text-sm text-center mb-6">
+          <p className="text-sm text-center mb-6 text-gray-500">
             Already have an account?{" "}
             <a
               href="/sign-in"
