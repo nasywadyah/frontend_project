@@ -54,9 +54,17 @@ function ChangePassword() {
           </p>
 
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            <label className="text-left block text-gray-700 font-medium text-sm">
-              New Password:
-            </label>
+            <div className="flex justify-between">
+              <label className="text-left block text-gray-700 font-medium text-sm">
+                New Password:
+              </label>
+              <div
+                className="text-xs opacity-60 cursor-pointer"
+                onClick={click_pass}
+              >
+                {statusHide ? <span>👁 Unhide</span> : <span>🙈 Hide</span>}
+              </div>
+            </div>
             <input
               className="border-2 border-solid rounded-lg pl-4 h-10 text-sm"
               type={statusHide ? "password" : "text"}
