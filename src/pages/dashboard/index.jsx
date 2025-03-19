@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect} from "react";
 import { motion } from "framer-motion";
 import { FaMoneyBillWave, FaArrowDown, FaArrowUp } from "react-icons/fa";
 import Navbar from "../components/navbar";
@@ -7,7 +7,13 @@ import Card from "../components/card";
 import TransactionList from "../components/transactionList";
 import NotificationCard from "../components/notificationCard";
 
+
+
 const Dashboard = () => {
+  useEffect(() => {
+    document.title = "Budgeting";
+  }, []);
+
   const mos = motion
   const transactions = [
     { id: 1, description: "Salary", amount: 5000 },

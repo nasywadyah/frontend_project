@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const RequestResetPassword = () => {
@@ -7,6 +7,10 @@ const RequestResetPassword = () => {
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [setIsLoading] = useState(false);
+
+  useEffect(() => {
+      document.title = "Budgeting";
+    }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
