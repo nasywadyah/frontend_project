@@ -1,48 +1,50 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../../api/auth";
 
 function Sign_Up() {
   const [statusHide, setStatusHide] = useState(true);
-  const [fullname, setFullname] = useState("");
+  const [name, setname] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const click_pass = () => {
     setStatusHide(!statusHide);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // if (password !== confirmPassword) {
+    //   setMessage("Passwords do not match");
+    //   setIsError(true);
+    //   return;
+    // }
+
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const data = await register(name, email, phone, password);
+      navigate("/dashboard"); // Redirect ke dashboard
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || "Login failed!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     document.title = "Budgeting";
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-      setIsError(true);
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/register",
-        {
-          fullname,
-          email,
-          password,
-        }
-      );
-
-      setMessage(response.data.message);
-      setIsError(false);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Registration failed");
-      setIsError(true);
-    }
+  const handleGoogleSignIn = () => {
+    window.location.href = "http://localhost:8000/auth-google-redirect";
   };
 
   return (
@@ -52,12 +54,14 @@ function Sign_Up() {
           <p className="text-xl font-semibold text-center">Create an Account</p>
           <p className="text-sm text-center mb-6 text-gray-500">
             Already have an account?{" "}
-            <a
-              href="/sign-in"
-              className="underline underline-offset-2 text-blue-600 cursor-pointer"
-            >
-              Log in
-            </a>
+            <Link to="/sign-in" className="underline underline-offset-2">
+              <a
+                href=""
+                className="underline underline-offset-2 text-blue-600 cursor-pointer"
+              >
+                Log in
+              </a>
+            </Link>
           </p>
 
           <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -67,9 +71,9 @@ function Sign_Up() {
             <input
               className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
               type="text"
-              name="fullname"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
+              name="name"
+              value={name}
+              onChange={(e) => setname(e.target.value)}
               placeholder="Enter Your Full Name"
               required
             />
@@ -87,15 +91,39 @@ function Sign_Up() {
               required
             />
 
+            <label className="text-left block text-gray-700 font-medium text-sm">
+              Phone:
+            </label>
+            <input
+              className="border-2 border-solid rounded-lg pl-4 mb-3 h-10 text-sm"
+              type="number"
+              name="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Enter Your Phone"
+              required
+            />
+
             <div className="flex justify-between">
               <label className="text-left block text-gray-700 font-medium text-sm">
                 Password:
               </label>
-              <div
-                className="text-xs opacity-60 cursor-pointer"
-                onClick={click_pass}
-              >
-                {statusHide ? <span>👁 Unhide</span> : <span>🙈 Hide</span>}
+              <div className="text-xs opacity-60" onClick={click_pass}>
+                {statusHide ? (
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => setpasswordVisible(true)}
+                  >
+                    <i className="fa-solid fa-eye text-xs"></i> Unhide
+                  </div>
+                ) : (
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => setpasswordVisible(false)}
+                  >
+                    <i className="fa-solid fa-eye-slash text-xs"></i> Hide
+                  </div>
+                )}
               </div>
             </div>
             <input
@@ -121,21 +149,15 @@ function Sign_Up() {
               required
             />
 
-            {message && (
-              <p
-                className={`text-sm text-center ${
-                  isError ? "text-red-600" : "text-green-600"
-                }`}
-              >
-                {message}
-              </p>
+            {errorMessage && (
+              <p className="text-red-500 mt-2">{errorMessage}</p>
             )}
 
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 rounded-lg mt-7 h-10 text-white font-semibold"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
             >
-              Create an Account
+              {isLoading ? "Loading..." : "Create an Account"}
             </button>
 
             <div className="flex items-center text-center my-6 ">
@@ -145,7 +167,10 @@ function Sign_Up() {
             </div>
 
             <div className="flex rounded-lg justify-center">
-              <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full shadow-sm hover:bg-gray-100">
+              <button
+                onClick={handleGoogleSignIn}
+                className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full shadow-sm hover:bg-gray-100"
+              >
                 <img
                   src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                   alt="Google Logo"

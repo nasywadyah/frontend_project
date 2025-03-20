@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { login } from "../../api/auth";
 
 const LoginForm = () => {
   const [statusHide, setStatusHide] = useState(true);
@@ -11,9 +12,14 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard");
+    }
+  }, []);
   // Set judul halaman
   useEffect(() => {
-    document.title = "Budgeting";
+    document.title = "Budgetin";
   }, []);
 
   // Toggle visibility password
@@ -33,18 +39,8 @@ const LoginForm = () => {
     setErrorMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-
-      localStorage.setItem("token", response.data.token);
-
-      // Redirect ke dashboard jika login berhasil
-      navigate("/dashboard");
+      const data = await login(formData.email, formData.password);
+      navigate("/dashboard"); // Redirect ke dashboard
     } catch (error) {
       setErrorMessage(error.response?.data?.message || "Login failed!");
     } finally {
@@ -54,14 +50,14 @@ const LoginForm = () => {
 
   // Handle Login dengan Google
   const handleGoogleLogin = () => {
-    console.log("Login dengan Google...");
+    window.location.href = "http://localhost:8000/auth-google-redirect";
   };
 
   return (
     <div className="flex items-center justify-center w-full mt-20">
       <div className=" bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-semibold text-center">
-          Welcome To Finovate
+          Welcome To Budgetin
         </h2>
         <h4 className="text-gray-500 text-center mb-6 text-sm mt-2 text-ms">
           Welcome back! Please enter your details
@@ -160,7 +156,9 @@ const LoginForm = () => {
           Dont have an account?{" "}
           <span className="text-blue-600 cursor-pointer">
             {" "}
-            <a href="/sign-up">Sign up now</a>
+            <Link to="/sign-up">
+              <a href="">Sign up now</a>
+            </Link>
           </span>
         </div>
       </div>
