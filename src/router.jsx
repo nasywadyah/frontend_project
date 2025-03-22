@@ -8,6 +8,7 @@ import Request_reset from "./pages/request_reset";
 import Change_password from "./pages/change_password";
 import GoogleCallback from "./pages/google_callback/GoogleCallback";
 import Dashboard from "./pages/dashboard";
+import Setting from "./pages/setting";
 import Transactions from "./pages/transactions";
 
 function router() {
@@ -22,6 +23,7 @@ function router() {
         <Route path="/change-password" element={<Change_password />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
     </BrowserRouter>
   );

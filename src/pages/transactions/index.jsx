@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
+
 import { getTransactions } from "../../api/transactions";
 
 const Transactions = () => {
