@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaMoneyBillWave, FaArrowDown, FaArrowUp } from "react-icons/fa";
 import Navbar from "../components/navbar";
-import Sidebar from "../components/navbar";
+import Sidebar from "../components/sidebar";
 import Card from "../components/card";
 import TransactionList from "../components/transactionList";
 import NotificationCard from "../components/notificationCard";
@@ -19,12 +19,12 @@ const Dashboard = () => {
   const [error, setError] = useState("");
 
   // Redirect jika tidak ada token
-  useEffect(() => {
+  /*useEffect(() => {
     if (localStorage.getItem("token") === null) {
       window.location.href = "/sign-in";
     }
     document.title = "BudgetIn";
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     document.title = "Budgeting";
