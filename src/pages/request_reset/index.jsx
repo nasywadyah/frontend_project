@@ -1,31 +1,37 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { resetPassword } from "../../api/password";
 
 const RequestResetPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-  const [setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-      document.title = "Budgeting";
-    }, []);
+    document.title = "Budgeting";
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:8000/api/auth/request-password-reset", {
-        email: email,
-      });
+      const data = await resetPassword(email);
+      console.log("Response dari API ke UI:", data);
 
-      // Simpan pesan dari response JSON
-      setMessage(response.data.message);
+      if (data && data.message) {
+        setMessage(data.message);
+      } else {
+        setMessage("An email has been sent if the address exists.");
+      }
       setIsError(false);
     } catch (error) {
-      setMessage(error.response.data.message);
+      console.error("Error Response:", error.response?.data || error.message);
+      setMessage(error.response?.data?.message || "Something went wrong.");
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -44,8 +50,8 @@ const RequestResetPassword = () => {
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email address" className="w-full px-4 py-2 border rounded-lg" required />
           </div>
 
-          <button type="submit" className="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">
-            <a href="/change-password"> Request Password Reset Link</a>
+          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+            {isLoading ? "Loading..." : "Request Reset Password"}
           </button>
         </form>
 
