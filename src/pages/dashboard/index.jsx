@@ -11,7 +11,7 @@ import NotificationCard from "../components/notificationCard";
 
 const Dashboard = () => {
   useEffect(() => {
-    document.title = "Budgeting";
+    document.title = "BudgetIn";
   }, []);
 
   const mos = motion

@@ -43,7 +43,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/settings" className="flex items-center gap-3 hover:text-gray-300 transition">
+            <Link to="/setting" className="flex items-center gap-3 hover:text-gray-300 transition">
               <FaCog /> {menu && (!isCollapsed && "Settings")}
             </Link>
           </li>

@@ -7,6 +7,7 @@ import Sign_up from "./pages/sign_up";
 import Request_reset from "./pages/request_reset";
 import Change_password from "./pages/change_password";
 import Dashboard from "./pages/dashboard";
+import Setting from "./pages/setting";
 
 function router() {
   return (
@@ -18,6 +19,7 @@ function router() {
         <Route path="/request-password-reset" element={<Request_reset />} />
         <Route path="/change-password" element={<Change_password />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
     </BrowserRouter>
   );

@@ -15,7 +15,7 @@ function Sign_Up() {
   };
 
   useEffect(() => {
-    document.title = "Budgeting";
+    document.title = "BudgetIn";
   }, []);
 
   const handleSubmit = async (e) => {

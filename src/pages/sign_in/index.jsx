@@ -13,7 +13,7 @@ const LoginForm = () => {
 
   // Set judul halaman
   useEffect(() => {
-    document.title = "Budgeting";
+    document.title = "BudgetIn";
   }, []);
 
   // Toggle visibility password

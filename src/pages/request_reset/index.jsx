@@ -9,7 +9,7 @@ const RequestResetPassword = () => {
   const [setIsLoading] = useState(false);
 
   useEffect(() => {
-      document.title = "Budgeting";
+      document.title = "BudgetIn";
     }, []);
 
   const handleSubmit = async (e) => {
