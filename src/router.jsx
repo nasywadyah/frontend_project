@@ -10,6 +10,8 @@ import GoogleCallback from "./pages/google_callback/GoogleCallback";
 import Dashboard from "./pages/dashboard";
 import Setting from "./pages/setting";
 import Transactions from "./pages/transactions";
+import Category from "./pages/category";
+
 
 function router() {
   return (
@@ -24,6 +26,7 @@ function router() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/category" element={<Category />} />
       </Routes>
     </BrowserRouter>
   );

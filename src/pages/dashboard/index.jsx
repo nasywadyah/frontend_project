@@ -27,7 +27,7 @@ const Dashboard = () => {
   }, []);*/
 
   useEffect(() => {
-    document.title = "Budgeting";
+    document.title = "BudgetIn";
 
     const fetchUser = async () => {
       setLoading(true);
