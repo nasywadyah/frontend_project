@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
+import AddTransactionForm from "../components/AddTransactionForm";
+import EditTransactionForm from "../components/EditTransactionForm";
 
-import { getTransactions } from "../../api/transactions";
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction } from "../../api/transactions";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,20 +15,21 @@ const Transactions = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const data = await getTransactions();
-        setTransactions(data.transactions);
-      } catch (err) {
-        setError("Gagal memuat data transaksi.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTransactions();
   }, []);
+
+  const fetchTransactions = async () => {
+    setLoading(true);
+    try {
+      const data = await getTransactions();
+      setTransactions(data.transactions);
+    } catch (err) {
+      setError("Gagal memuat data transaksi.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fungsi format Rupiah
   const formatRupiah = (amount) => {
@@ -49,27 +52,38 @@ const Transactions = () => {
   };
 
   // Simpan transaksi baru atau edit transaksi
-  const handleSave = (newTxn) => {
-    console.log("Menyimpan transaksi:", newTxn);
-
+  const handleSave = async (newTxn) => {
     if (!newTxn || !newTxn.amount || !newTxn.category || !newTxn.date || !newTxn.type) {
-      console.error("Data tidak lengkap!", newTxn);
+      alert("Data transaksi tidak lengkap!");
       return;
     }
 
-    if (modal === "add") {
-      const newTransaction = { ...newTxn, id: transactions.length + 1 };
-      setTransactions([...transactions, newTransaction]);
-    } else if (modal === "edit") {
-      setTransactions(transactions.map((txn) => (txn.id === newTxn.id ? newTxn : txn)));
+    try {
+      if (modal === "add") {
+        const response = await createTransaction(newTxn);
+        setTransactions([...transactions, response.transaction]);
+      } else if (modal === "edit") {
+        const response = await updateTransaction(newTxn.id, newTxn);
+        setTransactions(transactions.map((txn) => (txn.id === newTxn.id ? response.transaction : txn)));
+      }
+    } catch (err) {
+      alert("Terjadi kesalahan saat menyimpan transaksi.");
+      console.error(err);
     }
+
     setModal(null);
   };
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus transaksi ini?");
-    if (confirmDelete) {
-      setTransactions(transactions.filter((txn) => txn.id !== id));
+  //hapus transaksi yhh
+  const handleDelete = async (id) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
+      try {
+        await deleteTransaction(id);
+        setTransactions(transactions.filter((txn) => txn.id !== id));
+      } catch (err) {
+        alert("Gagal menghapus transaksi.");
+        console.error(err);
+      }
     }
   };
 
@@ -108,6 +122,7 @@ const Transactions = () => {
                     <th className="py-2 px-4 md:px-4 border whitespace-nowrap">Category</th>
                     <th className="py-2 px-4 md:px-4 border whitespace-nowrap">Type</th>
                     <th className="py-2 px-4 md:px-4 border whitespace-nowrap">Date</th>
+                    <th className="py-2 px-4 md:px-4 border whitespace-nowrap">Description</th>
                     <th className="py-2 px-4 md:px-4 border whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
@@ -119,6 +134,7 @@ const Transactions = () => {
                       <td className="py-2 px-4 md:px-4 border">{txn.category}</td>
                       <td className={`py-2 px-4 md:px-4 border font-semibold ${txn.type === "Income" ? "text-green-500" : "text-red-500"}`}>{txn.type}</td>
                       <td className="py-2 px-4 md:px-4 border">{formatDate(txn.date)}</td>
+                      <td className="py-2 px-4 md:px-4 border">{txn.description || "No description"}</td>
                       <td className="py-2 px-2 md:px-4 border flex gap-1 sm:gap-2 justify-center flex-wrap">
                         <button
                           className="px-2 py-1 bg-green-500 text-white rounded flex items-center gap-1"
@@ -152,69 +168,8 @@ const Transactions = () => {
           )}
         </div>
       </div>
-      {modal && <TransactionModal mode={modal} txn={currentTxn} onClose={() => setModal(null)} onSave={handleSave} />}
-    </div>
-  );
-};
-
-// Modal Form
-const TransactionModal = ({ mode, txn, onClose, onSave }) => {
-  const [form, setForm] = useState(txn || { amount: "", category: "", type: "", date: "" });
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(form);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md max-h-[80vh] overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">{mode === "add" ? "Tambah" : mode === "edit" ? "Edit" : "Detail"} Transaksi</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <label className="block">
-            <span className="text-gray-700">Amount</span>
-            <input type="number" name="amount" value={form.amount} onChange={handleChange} className="w-full p-2 border rounded mt-1" disabled={mode === "view"} required />
-          </label>
-
-          <label className="block">
-            Category
-            <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border rounded" disabled={mode === "view"} required>
-              <option value="">Select Category</option>
-              <option value="Gaji">Gaji</option>
-              <option value="Makanan">Makanan</option>
-              <option value="Transportasi">Transportasi</option>
-              <option value="Hiburan">Hiburan</option>
-            </select>
-          </label>
-          <label className="block">
-            Type
-            <select name="type" value={form.type} onChange={handleChange} className="w-full p-2 border rounded" disabled={mode === "view"} required>
-              <option value="">Select Type</option>
-              <option value="Income">Income</option>
-              <option value="Expense">Expense</option>
-            </select>
-          </label>
-          <label className="block">
-            Date
-            <input type="date" name="date" value={form.date} onChange={handleChange} className="w-full p-2 border rounded" disabled={mode === "view"} required />
-          </label>
-          <div className="flex justify-end gap-2 mt-4">
-            <button className="px-4 py-2 bg-gray-500 text-white rounded" onClick={onClose}>
-              Close
-            </button>
-            {(mode === "add" || mode === "edit") && (
-              <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={() => onSave(form)}>
-                Save
-              </button>
-            )}
-          </div>
-        </form>
-      </div>
+      {modal === "add" && <AddTransactionForm onClose={() => setModal(null)} onSave={handleSave} />}
+      {modal === "edit" && <EditTransactionForm txn={currentTxn} onClose={() => setModal(null)} onSave={handleSave} />}
     </div>
   );
 };

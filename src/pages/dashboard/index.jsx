@@ -4,7 +4,7 @@ import { FaMoneyBillWave, FaArrowDown, FaArrowUp } from "react-icons/fa";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 import Card from "../components/card";
-import TransactionList from "../components/transactionList";
+import TransactionList from "../components/AddTransactionForm.jsx";
 import NotificationCard from "../components/notificationCard";
 import IncomeExpensePieChart from "../components/IncomeExpensePieChart"; // Import Pie Chart
 import { getUser } from "../../api/user";
