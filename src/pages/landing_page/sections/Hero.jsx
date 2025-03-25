@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-
+import Blob from '../assets/blob.png';
 const Hero = () => {
   return (
-    <div className='hero bg-white min-h-screen'>
-      <div className='hero-content max-w-5xl flex-col justify-between gap-x-20 text-center lg:text-left lg:flex-row-reverse'>
+    <div className='hero bg-white min-h-screen relative overflow-hidden' >
+      <img src={Blob} alt='' className='absolute top-20 lg:top-0 lg:h-screen lg:-right-80' />
+      <div className='hero-content max-w-5xl flex-col justify-between gap-x-20 gap-y-10 text-center lg:text-left lg:flex-row-reverse'>
         <img
           src='https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp'
           className='max-w-sm rounded-lg shadow-2xl'
@@ -22,7 +23,10 @@ const Hero = () => {
             >
               Get Started
             </Link>
-            <a to={'/sign-up'} className='btn btn-ghost lg:btn-lg text-blue-500'>
+            <a
+              to={'/sign-up'}
+              className='btn btn-ghost lg:btn-lg text-blue-500'
+            >
               Learn More
             </a>
           </div>

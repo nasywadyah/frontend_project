@@ -1,10 +1,24 @@
+import { useEffect, useState } from 'react';
+
 const GuestLayout = ({ children }) => {
+  const [scroll, setScroll] = useState(false);
+  
+  useEffect(() => {
+    window.addEventListener('scroll', () =>
+      window.scrollY > 0 ? setScroll(true) : setScroll(false)
+    );
+  }, []);
+
   return (
     <div className='drawer'>
       <input id='my-drawer-3' type='checkbox' className='drawer-toggle' />
       <div className='drawer-content flex flex-col'>
         {/* Navbar */}
-        <div className='fixed top-0 w-full bg-white z-50'>
+        <div
+          className={`fixed top-0 w-full ${
+            scroll && 'bg-white'
+          } z-50 transition-all`}
+        >
           <div className='navbar w-full max-w-5xl m-auto'>
             <div className='flex-none lg:hidden'>
               <label

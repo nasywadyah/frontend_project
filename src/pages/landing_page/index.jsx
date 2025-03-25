@@ -5,14 +5,16 @@ import Footer from './sections/Footer';
 import Hero from './sections/Hero';
 import GuestLayout from './layouts/GuestLayout';
 import Quote from './sections/Quote';
+import Reviews from './sections/Reviews';
 
 function Landing_Page() {
   return (
     <GuestLayout>
       <Hero />
-      <Quote/>
+      <Quote />
       <Benefits />
       <Features />
+      <Reviews />
       <Footer />
     </GuestLayout>
   );
