@@ -2,9 +2,9 @@ import ducks from '../ducks.webp';
 
 const Features = () => {
   return (
-    <section className='min-h-screen'>
-      <div className='max-w-5xl m-auto space-y-72'>
-        <Feature>
+    <section id='features' className='min-h-screen scroll-m-60 px-4'>
+      <div className='max-w-5xl m-auto space-y-72 pb-72'>
+        <Feature className='flex-wrap'>
           <Image src={ducks} />
           <Text
             feature='Dashboard'
@@ -12,7 +12,7 @@ const Features = () => {
             paragraph='Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla possimus maiores placeat ex deserunt quidem dolore praesentium accusamus optio facilis.'
           />
         </Feature>
-        <Feature>
+        <Feature className='flex-wrap-reverse'>
           <Text
             feature='Transaction'
             slug='Record your income and expenses easily.'
@@ -20,7 +20,7 @@ const Features = () => {
           />
           <Image src={ducks} />
         </Feature>
-        <Feature>
+        <Feature className='flex-wrap'>
           <Image src={ducks} />
           <Text
             feature='Category'
@@ -28,7 +28,7 @@ const Features = () => {
             paragraph='Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla possimus maiores placeat ex deserunt quidem dolore praesentium accusamus optio facilis.'
           />
         </Feature>
-        <Feature>
+        <Feature className='flex-wrap-reverse'>
           <Text
             feature='Activity'
             slug='Robust log activities tracking.'
@@ -36,7 +36,7 @@ const Features = () => {
           />
           <Image src={ducks} />
         </Feature>
-        <Feature>
+        <Feature className='flex-wrap'>
           <Image src={ducks} />
           <Text
             feature='Google'
@@ -50,19 +50,21 @@ const Features = () => {
 };
 
 const Image = ({ src }) => (
-  <img src={src} alt='ducks' className='rounded-lg max-w-md h-fit' />
+  <img src={src} alt='ducks' className='rounded-lg md:max-w-md h-fit m-auto' />
 );
 
 const Text = ({ feature = '', slug = '', paragraph = '' }) => (
-  <div className='max-w-md space-y-4'>
-    <h6 className='font-bold text-blue-600'>{feature}</h6>
+  <div className='max-w-md space-y-4 m-auto'>
+    <h6 className='font-bold text-blue-500'>{feature}</h6>
     <h2 className='text-4xl font-bold'>{slug}</h2>
     <p className='text-lg'>{paragraph}</p>
   </div>
 );
 
-const Feature = ({ children }) => (
-  <div className='flex justify-between items-center'>{children}</div>
+const Feature = ({ children, className = '' }) => (
+  <div className={`flex justify-between gap-8 items-center ${className}`}>
+    {children}
+  </div>
 );
 
 export default Features;

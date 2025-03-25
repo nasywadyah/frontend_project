@@ -1,15 +1,20 @@
 import google from './google.svg';
+import Benefits from './sections/Benefits';
 import Features from './sections/Features';
+import Footer from './sections/Footer';
 import Hero from './sections/Hero';
-import NavBar from './sections/NavBar';
+import GuestLayout from './layouts/GuestLayout';
+import Quote from './sections/Quote';
 
 function Landing_Page() {
   return (
-    <>
-      <NavBar />
+    <GuestLayout>
       <Hero />
-      <Features/>
-    </>
+      <Quote/>
+      <Benefits />
+      <Features />
+      <Footer />
+    </GuestLayout>
   );
 }
 
