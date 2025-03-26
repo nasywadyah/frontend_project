@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
   return (
     <section className='bg-blue-900 text-white'>
@@ -12,23 +14,48 @@ const Footer = () => {
         </aside>
         <nav>
           <h6 className='footer-title'>Get Started</h6>
-          <a className='link link-hover'>Sign in</a>
-          <a className='link link-hover'>Sign up</a>
+          <Link to={'/sign-in'} className='link link-hover'>
+            Sign in
+          </Link>
+          <Link to={'/sign-up'} className='link link-hover'>
+            Sign up
+          </Link>
         </nav>
         <nav>
           <h6 className='footer-title'>Sections</h6>
-          <a className='link link-hover'>Home</a>
-          <a className='link link-hover'>Features</a>
-          <a className='link link-hover'>Benefits</a>
+          <a href='#home' className='link link-hover'>
+            Home
+          </a>
+          <a href='#benefits' className='link link-hover'>
+            Benefits
+          </a>
+          <a href='#features' className='link link-hover'>
+            Features
+          </a>
+          <a href='#reviews' className='link link-hover'>
+            Reviews
+          </a>
         </nav>
         <nav>
           <h6 className='footer-title'>Developers</h6>
-          <a className='link link-hover'>Muhammad Daffa Ibnu Fawwazy</a>
-          <a className='link link-hover'>Arfa Banyu Santoro</a>
-          <a className='link link-hover'>Chaesya Alya Destriandy</a>
-          <a className='link link-hover'>Nasywa Dyah Putri</a>
-          <a className='link link-hover'>Muhammad Raihan Al Farizy</a>
-          <a className='link link-hover'>Edward Nicholas Wijaya</a>
+          <a href='/' className='link link-hover'>
+            Muhammad Daffa Ibnu Fawwazy
+          </a>
+          <a href='/' className='link link-hover'>
+            Arfa Banyu Santoro
+          </a>
+          <a href='/' className='link link-hover'>
+            Chaesya Alya Destriandy
+          </a>
+          <a href='/' className='link link-hover'>
+            Nasywa Dyah Putri
+          </a>
+          <a href='/' className='link link-hover'>
+            Muhammad Raihan Al Farizy
+          </a>
+          <a href='/' className='link link-hover'>
+            Edward Nicholas Wijaya
+          </a>
         </nav>
       </footer>
       <footer className='footer footer-center bg-blue-900 text-white p-4'>
@@ -42,19 +69,5 @@ const Footer = () => {
     </section>
   );
 };
-
-const Ul = ({ children, className = '' }) => (
-  <ul className={`space-y-2 ${className}`}>{children}</ul>
-);
-const Title = ({ children, className = '' }) => (
-  <h3 className={`font-semibold text-lg ${className}`}>{children}</h3>
-);
-const Li = ({ children, to = '', className = '' }) => (
-  <li
-    className={`w-52 rounded-lg text-gray-200 hover:text-gray-400 transition-all ${className}`}
-  >
-    <a href={to}>{children}</a>
-  </li>
-);
 
 export default Footer;
