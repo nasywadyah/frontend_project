@@ -1,40 +1,80 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
+import useApi from '../../helper/useApi'
 
 const CategoryPage = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Gaji", type: "Income" },
-    { id: 2, name: "Makanan", type: "Expense" },
-    { id: 3, name: "Transportasi", type: "Expense" },
-  ]);
+  const api = useApi()
+  const [datacategory, setdatacategory] = useState([])
+  const [error, seterror] = useState("")
+  const [idcategory, setidcategory] = useState("")
+  const [namecategory, setnamecategory] = useState("")
+  const [typecategory, settypecategory] = useState("income")
 
-  const [newCategory, setNewCategory] = useState({ name: "", type: "Income" });
-  const [editCategory, setEditCategory] = useState(null);
-
-  // Tambah kategori
-  const addCategory = () => {
-    if (newCategory.name.trim() !== "") {
-      setCategories([...categories, { ...newCategory, id: Date.now() }]);
-      setNewCategory({ name: "", type: "Income" });
+  const getDataCategory = async () => {
+    try {
+        const { data } = await api({ method: 'get', url: `/api/categories` })
+        setdatacategory(data.data)
+    } catch (error) {
+        console.log(error.response.data.message)
     }
-  };
+  }
 
-  // Hapus kategori
-  const deleteCategory = (id) => {
-    setCategories(categories.filter((cat) => cat.id !== id));
-  };
+  const deleteCategory = async (categoryId) => {
+    try {
+        await api({ method: 'delete', url: `/api/categories/${categoryId}` })
+getDataCategory();
+    } catch (error) {
+        console.log(error.response.data)
+    }
+  }
 
-  // Edit kategori
-  const updateCategory = () => {
-    setCategories(
-      categories.map((cat) =>
-        cat.id === editCategory.id ? editCategory : cat
-      )
-    );
-    setEditCategory(null);
-  };
+const addCategory = async (e) => {
+    e.preventDefault()
+    try {
+            await api({
+                method: 'post', url: '/api/categories', data: {
+                    "userid": localStorage.getItem("userid"),
+                    "name": namecategory,
+                    "type": typecategory,
+                }
+            })
+            getDataCategory();
+    } catch (error) {
+      seterror(error.response.data.message)
+      console.log(error.response.data)
+    }
+}
 
+const updateCategory = async (e) => {
+  e.preventDefault()
+  try {
+          await api({
+              method: 'put', url: `/api/categories/${idcategory}`, data: {
+                  "userid": localStorage.getItem("userid"),
+                  "name": namecategory,
+                  "type": typecategory,
+              }
+          })
+          getDataCategory();
+          setidcategory("");
+          setnamecategory("");
+          settypecategory("income")
+  } catch (error) {
+    console.log(error.response.data)
+  }
+}
+
+   useEffect(() => {
+      document.title = "Category";
+      getDataCategory();
+    }, []); // di ekseskusi sebelum rendering
+
+    useEffect(() => {
+      setTimeout(() => {
+        seterror("");
+    }, 5000);
+  }, [error]) // di eksekusi sesudah rendering
   return (
     <div>
         <div className="flex min-h-screen bg-gray-50">
@@ -51,47 +91,75 @@ const CategoryPage = () => {
       {/* Form Tambah / Edit */}
       <div className="mb-4 p-4 bg-gray-100 rounded-md">
         <h2 className="text-lg font-semibold mb-2">
-          {editCategory ? "Edit Category" : "Add New Category"}
+          {idcategory!="" ? "Edit Category" : "Add New Category"}
         </h2>
         <div className="flex gap-4">
+          <form onSubmit={idcategory!="" ? addCategory:updateCategory} className="flex w-full">
+          <input
+            type={idcategory!="" ? "text":"hidden"}
+            placeholder="Category ID"
+            className="p-2 border rounded w-full"
+            // value={editCategory ? editCategory.name : newCategory.name}
+            // onChange={(e) =>
+            //   editCategory
+            //     ? setEditCategory({ ...editCategory, name: e.target.value })
+            //     : setNewCategory({ ...newCategory, name: e.target.value })
+            // }
+            value={idcategory}
+          />
           <input
             type="text"
             placeholder="Category Name"
             className="p-2 border rounded w-full"
-            value={editCategory ? editCategory.name : newCategory.name}
-            onChange={(e) =>
-              editCategory
-                ? setEditCategory({ ...editCategory, name: e.target.value })
-                : setNewCategory({ ...newCategory, name: e.target.value })
-            }
+            // value={editCategory ? editCategory.name : newCategory.name}
+            // onChange={(e) =>
+            //   editCategory
+            //     ? setEditCategory({ ...editCategory, name: e.target.value })
+            //     : setNewCategory({ ...newCategory, name: e.target.value })
+            // }
+            value={namecategory}
+            onChange={(e) => setnamecategory(e.target.value)}
           />
           <select
             className="p-2 border rounded"
-            value={editCategory ? editCategory.type : newCategory.type}
-            onChange={(e) =>
-              editCategory
-                ? setEditCategory({ ...editCategory, type: e.target.value })
-                : setNewCategory({ ...newCategory, type: e.target.value })
-            }
+            // value={editCategory ? editCategory.type : newCategory.type}
+            // onChange={(e) =>
+            //   editCategory
+            //     ? setEditCategory({ ...editCategory, type: e.target.value })
+            //     : setNewCategory({ ...newCategory, type: e.target.value })
+            // }
+            value={typecategory}
+            onChange={(e) => settypecategory(e.target.value)}
           >
-            <option value="Income">Income</option>
-            <option value="Expense">Expense</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
           </select>
-          {editCategory ? (
+          {idcategory!="" ? (
+            <div className="grid">
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+            type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded my-6  w-full"
               onClick={updateCategory}
             >
               Update
             </button>
+             <button
+             className="bg-blue-500 text-white px-4 py-2 rounded"
+             onClick={() => (setidcategory(""), setnamecategory(""), settypecategory("income"))}
+            >
+              Reset
+           </button>
+           </div>
           ) : (
-            <button
+            <button type="submit"
               className="bg-green-500 text-white px-4 py-2 rounded"
               onClick={addCategory}
             >
               Add
             </button>
           )}
+          <p> {error!="" ? error : ""}</p>
+          </form>
         </div>
       </div>
 
@@ -106,7 +174,7 @@ const CategoryPage = () => {
           </tr>
         </thead>
         <tbody>
-          {categories.map((cat, index) => (
+          {datacategory.map((cat, index) => (
             <tr key={cat.id} className="text-center">
               <td className="border p-2">{index + 1}</td>
               <td className="border p-2">{cat.name}</td>
@@ -122,7 +190,7 @@ const CategoryPage = () => {
               <td className="border p-2">
                 <button
                   className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
-                  onClick={() => setEditCategory(cat)}
+                  onClick={() => (setidcategory(cat.id), setnamecategory(cat.name), settypecategory(cat.type))}
                 >
                   Edit
                 </button>
