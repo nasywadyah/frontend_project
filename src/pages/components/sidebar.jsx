@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaChartPie, FaMoneyBill, FaCog, FaBars } from "react-icons/fa";
+import { FaChartPie, FaMoneyBill, FaCog, FaBars, FaThLarge } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 1030);
@@ -43,10 +43,15 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/category" className="flex items-center gap-3 hover:text-gray-300 transition">
+              <FaThLarge /> {menu && !isCollapsed && "Category"}
+            </Link>
+          </li>
+          <li>
             <Link to="/setting" className="flex items-center gap-3 hover:text-gray-300 transition">
               <FaCog /> {menu && !isCollapsed && "Settings"}
             </Link>
-          </li>
+          </li> 
         </ul>
       </nav>
     </aside>
