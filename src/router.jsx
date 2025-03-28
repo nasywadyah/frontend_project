@@ -17,7 +17,7 @@ function router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/landing-page" element={<Landing_page />} />
+        <Route path="/" element={<Landing_page />} />
         <Route path="/sign-in" element={<Sign_in />} />
         <Route path="/sign-up" element={<Sign_up />} />
         <Route path="/google-callback" element={<GoogleCallback />} />
