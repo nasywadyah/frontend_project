@@ -18,9 +18,12 @@ const TransactionList = ({ transactions }) => {
             <span>{transaction.description}</span>
             <span
               className={
-                transaction.amount < 0 ? "text-red-500" : "text-green-500"
+                transaction.type === "expense"
+                  ? "text-red-500"
+                  : "text-green-500"
               }
             >
+              {transaction.type === "expense" ? "-" : ""}
               {formatRupiah(transaction.amount)}
             </span>
           </li>

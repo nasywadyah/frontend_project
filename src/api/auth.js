@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../utils/expiredApi";
 
 export const register = async (name, email, phone, password) => {
   try {
@@ -32,5 +33,30 @@ export const login = async (email, password) => {
     return response.data;
   } catch (error) {
     throw error;
+  }
+};
+
+export const logout = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found");
+
+    const response = await api.post(
+      "http://localhost:8000/api/auth/logout",
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    localStorage.removeItem("token");
+
+    return response.data;
+  } catch (error) {
+    console.error("Logout error:", error);
+    throw new Error(error.response?.data?.message || "Logout failed!");
   }
 };
