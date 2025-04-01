@@ -4,12 +4,12 @@ const Hero = () => {
   return (
     <section
       id='home'
-      className='hero bg-white min-h-screen relative overflow-hidden'
+      className='hero bg-white min-h-screen md:min-h-[750px] lg:min-h-screen relative overflow-hidden'
     >
       <img
         src={Blob}
         alt=''
-        className='absolute top-20 lg:top-0 lg:h-screen lg:-right-80'
+        className='absolute top-20 md:h-1/2 lg:top-0 lg:h-screen lg:-right-80'
       />
       <div className='hero-content max-w-5xl flex-col justify-between gap-x-20 gap-y-10 text-center lg:text-left lg:flex-row-reverse'>
         <img
