@@ -121,7 +121,12 @@ const Dashboard = () => {
               </motion.div>
 
               {/* Grafik Pie Chart */}
-              <motion.div className="bg-white p-5 rounded-lg shadow-lg flex items-center justify-center h-[300px] flex-1 min-w-[300px] max-w-[500px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.8 }}>
+              <motion.div
+                className="bg-white p-5 rounded-lg shadow-lg flex items-center justify-center h-[300px] flex-1 min-w-[300px] max-w-[500px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              >
                 <IncomeExpensePieChart income={income} expense={expense} />
               </motion.div>
             </div>
