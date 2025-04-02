@@ -24,10 +24,9 @@ const LogActivityPage = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const confirmed = window.confirm("Are you sure tou want to delete this activity?");
+    const confirmed = window.confirm("Are you sure you want to delete this activity?");
     if (confirmed) {
       setIsLoading(true);
-
       setTimeout(() => {
         setActivities(activities.filter((activity) => activity.id !== id));
         setIsLoading(false);
@@ -44,14 +43,13 @@ const LogActivityPage = () => {
         <Navbar />
 
         <div className="p-4">
-          <input type="text" placeholder="Search Activity..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input type="text" placeholder="Search activity..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div className="px-4">
           {isLoadingData ? (
             <motion.div className="flex justify-center items-center py-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <motion.div className="animate-spin rounded-full border-t-4 border-blue-500 w-8 h-8" initial={{ rotate: 0 }} animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}></motion.div>
-              <p className="ml-4 text-gray-500"></p>
             </motion.div>
           ) : isLoading ? (
             <motion.div className="flex justify-center items-center py-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
