@@ -18,13 +18,13 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [_, setError] = useState("");
 
-  // Redirect jika tidak ada token
-  /*useEffect(() => {
-    if (localStorage.getItem("token") === null) {
-      window.location.href = "/sign-in";
-    }
-    document.title = "BudgetIn";
-  }, []);*/
+  // // Redirect jika tidak ada token
+  // /*useEffect(() => {
+  //   if (localStorage.getItem("token") === null) {
+  //     window.location.href = "/sign-in";
+  //   }
+  //   document.title = "BudgetIn";
+  // }, []);*/
 
   useEffect(() => {
     document.title = "BudgetIn";
@@ -49,16 +49,17 @@ const Dashboard = () => {
     const fetchTransactions = async () => {
       try {
         const transactionResponse = await getTransactions();
+        console.log(transactionResponse.data);
         setTransactions(transactionResponse.data);
 
         // Hitung total pemasukan & pengeluaran
         let totalIncome = 0;
         let totalExpense = 0;
         transactionResponse.data.forEach((trx) => {
-          if (trx.amount > 0) {
-            totalIncome += trx.amount;
-          } else {
-            totalExpense += Math.abs(trx.amount);
+          if (trx.type === "income") {
+            totalIncome += parseFloat(trx.amount);
+          } else if (trx.type === "expense") {
+            totalExpense += parseFloat(trx.amount);
           }
         });
 
