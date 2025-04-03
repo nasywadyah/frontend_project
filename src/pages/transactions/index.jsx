@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
