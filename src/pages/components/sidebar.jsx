@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaChartPie, FaMoneyBill, FaCog, FaBars, FaThLarge, FaListAlt } from "react-icons/fa";
+import { FaChartPie, FaMoneyBill, FaCog, FaBars, FaThLarge, FaListAlt, FaLightbulb } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 1030);
@@ -51,6 +51,11 @@ const Sidebar = () => {
           <li>
             <Link to="/log-activity" className="flex items-center gap-3 hover:text-gray-300 transition">
               <FaListAlt /> {menu && !isCollapsed && "Log Activity"}
+            </Link>
+          </li>
+          <li>
+            <Link to="/recommendation" className="flex items-center gap-3 hover:text-gray-300 transition">
+            <FaLightbulb /> {menu && !isCollapsed && "Recommendation"}
             </Link>
           </li>
           <li>

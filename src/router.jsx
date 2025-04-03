@@ -12,6 +12,7 @@ import Setting from "./pages/setting";
 import Transactions from "./pages/transactions";
 import Category from "./pages/category";
 import LogActivity from "./pages/log_activity";
+import Recommendation from "./pages/recommendation";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import UserAdmin from "./pages/admin/UserAdmin";
 
@@ -30,6 +31,7 @@ function router() {
         <Route path="/setting" element={<Setting />} />
         <Route path="/category" element={<Category />} />
         <Route path="/log-activity" element={<LogActivity />} />
+        <Route path="/recommendation" element={<Recommendation />} />
         <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/admin/users" element={<UserAdmin />} />
       </Routes>
