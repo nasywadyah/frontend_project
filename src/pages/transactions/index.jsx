@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
@@ -5,7 +7,8 @@ import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 import FilterBar from "../components/FilterBar";
 
-//import { getTransactions } from "../../api/transactions";
+// Uncomment when ready to use real API
+// import { getTransactions, createTransaction, updateTransaction, deleteTransaction } from "../../api/transactions"
 
 const Transactions = () => {
   const dummyTransactions = [
@@ -42,7 +45,7 @@ const Transactions = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Simulate data loading with a delay to show the loading state
+  // Fetch transactions on component mount
   useEffect(() => {
     const fetchTransactions = async () => {
       setLoading(true);
@@ -50,10 +53,12 @@ const Transactions = () => {
         // Simulate API call with a delay
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        // const data = await getTransactions();
-        // setTransactions(data.transactions);
-        //setFilteredTransactions(data.transactions);
+        // For real API:
+        // const data = await getTransactions()
+        // setTransactions(data.data)
+        // setFilteredTransactions(data.data)
 
+        // Using dummy data for now
         setTransactions(dummyTransactions);
         setFilteredTransactions(dummyTransactions);
       } catch (err) {
@@ -128,7 +133,7 @@ const Transactions = () => {
     setFilteredTransactions(filtered);
   };
 
-  // Fungsi format Rupiah
+  // Format currency to Rupiah
   const formatRupiah = (amount) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -136,7 +141,7 @@ const Transactions = () => {
     }).format(amount);
   };
 
-  // Fungsi format tanggal
+  // Format date to Indonesian format
   const formatDate = (dateString) => {
     if (!dateString) return "Invalid Date";
     const date = new Date(dateString);
@@ -148,8 +153,8 @@ const Transactions = () => {
     });
   };
 
-  // Simpan transaksi baru atau edit transaksi
-  const handleSave = (newTxn) => {
+  // Save new or edit existing transaction
+  const handleSave = async (newTxn) => {
     console.log("Menyimpan transaksi:", newTxn);
 
     if (!newTxn || !newTxn.amount || !newTxn.category || !newTxn.transaction_date || !newTxn.type) {
@@ -157,11 +162,21 @@ const Transactions = () => {
       return;
     }
 
-    // Set loading state while saving
     setLoading(true);
 
-    // Simulate API call delay
-    setTimeout(() => {
+    try {
+      // For real API:
+      // if (modal === "add") {
+      //   const response = await createTransaction(newTxn)
+      //   setTransactions([...transactions, response.transaction])
+      // } else if (modal === "edit") {
+      //   const response = await updateTransaction(newTxn.id, newTxn)
+      //   setTransactions(transactions.map((txn) => txn.id === newTxn.id ? response.transaction : txn))
+      // }
+
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       if (modal === "add") {
         const newTransaction = {
           ...newTxn,
@@ -169,41 +184,50 @@ const Transactions = () => {
           category: { name: newTxn.category },
         };
         setTransactions([...transactions, newTransaction]);
+        setFilteredTransactions([...filteredTransactions, newTransaction]);
       } else if (modal === "edit") {
-        setTransactions(
-          transactions.map((txn) =>
-            txn.id === newTxn.id
-              ? {
-                  ...newTxn,
-                  category: { name: newTxn.category },
-                }
-              : txn
-          )
+        const updatedTransactions = transactions.map((txn) =>
+          txn.id === newTxn.id
+            ? {
+                ...newTxn,
+                category: { name: newTxn.category },
+              }
+            : txn
         );
+        setTransactions(updatedTransactions);
+        setFilteredTransactions(updatedTransactions);
       }
 
       setModal(null);
+    } catch (err) {
+      setError("Terjadi kesalahan saat menyimpan transaksi.");
+      console.error(err);
+    } finally {
       setLoading(false);
-    }, 1000); // Simulate a delay for the save operation
+    }
   };
 
-  //hapus transaksi
+  // Delete transaction
   const handleDelete = async (id) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
       setLoading(true);
 
-      // Simulate API call delay
-      setTimeout(() => {
-        /*try {
-          await deleteTransaction(id);
-          setTransactions(transactions.filter((txn) => txn.id !== id));
-        } catch (err) {
-          alert("Gagal menghapus transaksi.");
-          console.error(err);
-        }*/
-        setTransactions(transactions.filter((txn) => txn.id !== id));
+      try {
+        // For real API:
+        // await deleteTransaction(id)
+
+        // Simulate API call delay
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        const updatedTransactions = transactions.filter((txn) => txn.id !== id);
+        setTransactions(updatedTransactions);
+        setFilteredTransactions(updatedTransactions);
+      } catch (err) {
+        setError("Gagal menghapus transaksi.");
+        console.error(err);
+      } finally {
         setLoading(false);
-      }, 800);
+      }
     }
   };
 
