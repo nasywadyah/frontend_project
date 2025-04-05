@@ -66,18 +66,10 @@ const SidebarAdmin = () => {
           </li>
           <li>
             <Link
-              to="/admin/manage-transactions"
+              to="/admin/transactions"
               className="flex items-center gap-3 hover:text-gray-300 transition"
             >
               <FaExchangeAlt /> {menu && !isCollapsed && "Manage Transaction"}
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/manage-categories"
-              className="flex items-center gap-3 hover:text-gray-300 transition"
-            >
-              <FaFolder /> {menu && !isCollapsed && "Manage Category"}
             </Link>
           </li>
         </ul>

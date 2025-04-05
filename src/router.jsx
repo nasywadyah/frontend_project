@@ -14,6 +14,7 @@ import Category from "./pages/category";
 import LogActivity from "./pages/log_activity";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import UserAdmin from "./pages/admin/UserAdmin";
+import TransactionAdmin from "./pages/admin/TransactionAdmin";
 
 function router() {
   return (
@@ -32,6 +33,7 @@ function router() {
         <Route path="/log-activity" element={<LogActivity />} />
         <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/admin/users" element={<UserAdmin />} />
+        <Route path="/admin/transactions" element={<TransactionAdmin />} />
       </Routes>
     </BrowserRouter>
   );
