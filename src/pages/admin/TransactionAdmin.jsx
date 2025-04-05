@@ -1,34 +1,41 @@
 import { useEffect, useState } from "react";
-import { FaUserSlash } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import api from "../../utils/expiredApi";
 import Navbar from "../components/navbar";
 import SidebarAdmin from "../components/SidebarAdmin";
 
-const UserAdmin = () => {
-  const [users, setUsers] = useState([]);
+const TransactionAdmin = () => {
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({});
 
   useEffect(() => {
-    fetchUsers();
+    fetchTransactions(1);
   }, []);
 
-  const fetchUsers = async (page) => {
+  const formatRupiah = (amount) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(amount);
+  };
+
+  const fetchTransactions = async (page) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const response = await api.get(
-        `http://localhost:8000/api/admin/users?page=${page}`,
+        `http://localhost:8000/api/admin/transactions?page=${page}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setUsers(response.data.data);
-      setPagination(response.data.pagination);
+      setTransactions(response.data.data.data);
+      setPagination(response.data.data);
     } catch (error) {
-      setError("Gagal memuat data user.");
-      console.error("Error fetching users:", error);
+      setError("Gagal memuat data transaksi.");
+      console.error("Error fetching transactions:", error);
     } finally {
       setLoading(false);
     }
@@ -36,32 +43,26 @@ const UserAdmin = () => {
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.last_page) {
-      fetchUsers(newPage);
+      fetchTransactions(newPage);
     }
   };
 
-  const handleDeactivate = async (email) => {
-    if (!window.confirm("Apakah Anda yakin ingin menonaktifkan pengguna ini?"))
+  const handleDelete = async (id) => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus transaksi ini?"))
       return;
 
     try {
       const token = localStorage.getItem("token");
-      await api.patch(
-        `http://localhost:8000/api/admin/users/${email}/deactivate`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      alert("User berhasil dinonaktifkan.");
-      fetchUsers();
+      await api.delete(`http://localhost:8000/api/admin/transactions/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("Transaksi berhasil dihapus.");
+      fetchTransactions();
     } catch (error) {
-      console.error("Error deactivating user:", error);
-      alert("Terjadi kesalahan saat menonaktifkan user.");
+      console.error("Error deleting transaction:", error);
+      alert("Terjadi kesalahan saat menghapus transaksi.");
     }
   };
 
@@ -72,52 +73,52 @@ const UserAdmin = () => {
         <Navbar name="Admin" />
         <div className="p-6">
           <h1 className="text-lg sm:text-2xl font-semibold mb-4">
-            Kelola Pengguna
+            Kelola Transaksi
           </h1>
           {loading && (
-            <p className="text-center text-gray-500">Memuat data pengguna...</p>
+            <p className="text-center text-gray-500">
+              Memuat data transaksi...
+            </p>
           )}
           {error && <p className="text-center text-red-500">{error}</p>}
-          {!loading && !error && users.length > 0 ? (
+          {!loading && !error && transactions.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full border-collapse border border-gray-200 text-xs sm:text-sm md:text-base">
                 <thead>
                   <tr className="bg-gray-800 text-white">
                     <th className="py-2 px-4 border">No</th>
-                    <th className="py-2 px-4 border">Nama</th>
-                    <th className="py-2 px-4 border hidden sm:table-cell">
-                      Email
-                    </th>
-                    <th className="py-2 px-4 border">Status</th>
+                    <th className="py-2 px-4 border">Nama Pengguna</th>
+                    <th className="py-2 px-4 border">Tipe</th>
+                    <th className="py-2 px-4 border">Kategori</th>
+                    <th className="py-2 px-4 border">Jumlah</th>
+                    <th className="py-2 px-4 border">Tanggal</th>
                     <th className="py-2 px-4 border">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user, index) => (
-                    <tr key={user.id} className="border-b text-center">
+                  {transactions.map((transaction, index) => (
+                    <tr key={transaction.id} className="border-b text-center">
                       <td className="py-2 px-4 border">{index + 1}</td>
-                      <td className="py-2 px-4 border">{user.name}</td>
-                      <td className="py-2 px-4 border hidden sm:table-cell break-all">
-                        {user.email}
+                      <td className="py-2 px-4 border">
+                        {transaction.user.name}
                       </td>
-                      <td
-                        className={`py-2 px-4 border font-semibold ${
-                          user.status === "deactive"
-                            ? "text-red-500"
-                            : "text-green-500"
-                        }`}
-                      >
-                        {user.status}
+                      <td className="py-2 px-4 border">{transaction.type}</td>
+                      <td className="py-2 px-4 border">
+                        {transaction.category.name}
                       </td>
                       <td className="py-2 px-4 border">
-                        {user.status === "active" && (
-                          <button
-                            onClick={() => handleDeactivate(user.email)}
-                            className="px-3 py-1 bg-red-500 text-white rounded flex items-center gap-1 hover:bg-red-600 transition"
-                          >
-                            <FaUserSlash /> Nonaktifkan
-                          </button>
-                        )}
+                        {formatRupiah(transaction.amount)}
+                      </td>
+                      <td className="py-2 px-4 border">
+                        {transaction.transaction_date}
+                      </td>
+                      <td className="py-2 px-4 border flex justify-center gap-2">
+                        <button
+                          onClick={() => handleDelete(transaction.id)}
+                          className="px-3 py-1 bg-red-500 text-white rounded flex items-center gap-1 hover:bg-red-600 transition"
+                        >
+                          <FaTrash /> Hapus
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -125,7 +126,7 @@ const UserAdmin = () => {
               </table>
               <div className="flex justify-between items-center mt-4">
                 <button
-                  disabled={!pagination.prev_page_url}
+                  disabled={pagination.current_page === 1}
                   onClick={() => handlePageChange(pagination.current_page - 1)}
                   className="px-3 py-1 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
                 >
@@ -137,7 +138,7 @@ const UserAdmin = () => {
                 </span>
 
                 <button
-                  disabled={!pagination.next_page_url}
+                  disabled={pagination.current_page === pagination.last_page}
                   onClick={() => handlePageChange(pagination.current_page + 1)}
                   className="px-3 py-1 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
                 >
@@ -149,7 +150,7 @@ const UserAdmin = () => {
             !loading &&
             !error && (
               <p className="text-center text-gray-500">
-                Tidak ada pengguna ditemukan.
+                Tidak ada transaksi ditemukan.
               </p>
             )
           )}
@@ -159,4 +160,4 @@ const UserAdmin = () => {
   );
 };
 
-export default UserAdmin;
+export default TransactionAdmin;
