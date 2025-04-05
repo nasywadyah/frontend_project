@@ -35,9 +35,9 @@ export const getUsersById = async (id) => {
   }
 };
 
-export const deactiveUsers = async (id) => {
+export const deactiveUsers = async (email) => {
   try {
-    const response = await axios.patch(`${API_URL}/users/${id}/deactivate`, {
+    const response = await axios.patch(`${API_URL}/users/${email}/deactivate`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
