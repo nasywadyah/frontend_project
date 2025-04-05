@@ -4,8 +4,6 @@ import { useState } from "react";
 
 const RecommendationForm = () => {
   const [formData, setFormData] = useState({
-    Annual_Income: "",
-    Monthly_Inhand_Salary: "",
     Num_Bank_Accounts: "",
     Num_Credit_Card: "",
     Interest_Rate: "",
@@ -18,7 +16,6 @@ const RecommendationForm = () => {
     Credit_Utilization_Ratio: "",
     Total_EMI_per_month: "",
     Amount_invested_monthly: "",
-    Monthly_Balance: "",
     Credit_Mix: "Good",
     Payment_of_Min_Amount: "Yes",
   });
