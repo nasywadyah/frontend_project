@@ -1,12 +1,15 @@
 import axios from "axios";
+import api from "../utils/expiredApi";
 
 const API_URL = "http://localhost:8000/api/transactions";
+
 
 //dapet semua data
 export const getTransactions = async () => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(API_URL, {
+
+    const response = await api.get(API_URL, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -18,19 +21,18 @@ export const getTransactions = async () => {
   }
 };
 
-//nambahin transaksi yaww
-export const createTransaction = async ({ amount, type, category, description, date }) => {
+export const createTransaction = async ({
+  amount,
+  type,
+  category_id,
+  description,
+  transaction_date,
+}) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.post(
+    const response = await api.post(
       API_URL,
-      {
-        amount,
-        type,
-        category,
-        description,
-        date,
-      },
+      { amount, type, category_id, description, transaction_date },
       {
         headers: {
           "Content-Type": "application/json",
@@ -44,19 +46,15 @@ export const createTransaction = async ({ amount, type, category, description, d
   }
 };
 
-//ini update atau memperbarui yaa
-export const updateTransaction = async (transactionId, { amount, type, category, description, date }) => {
+export const updateTransaction = async (
+  transactionId,
+  { amount, type, category_id, description, transaction_date }
+) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.put(
+    const response = await api.put(
       `${API_URL}/${transactionId}`,
-      {
-        amount,
-        type,
-        category,
-        description,
-        date,
-      },
+      { amount, type, category_id, description, transaction_date },
       {
         headers: {
           "Content-Type": "application/json",
@@ -70,11 +68,11 @@ export const updateTransaction = async (transactionId, { amount, type, category,
   }
 };
 
-//ini buat hapus kayak masalalu
+
 export const deleteTransaction = async (transactionId) => {
   try {
     const token = localStorage.getItem("token");
-    await axios.delete(`${API_URL}/${transactionId}`, {
+    await api.delete(`${API_URL}/${transactionId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
