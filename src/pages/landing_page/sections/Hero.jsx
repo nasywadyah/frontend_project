@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Blob from '../assets/blob.png';
+import dashboard from '../assets/features/dashboard.jpeg';
 const Hero = () => {
   return (
     <section
@@ -11,11 +12,12 @@ const Hero = () => {
         alt=''
         className='absolute top-20 md:h-1/2 lg:top-0 lg:h-screen lg:-right-80'
       />
-      <div className='hero-content max-w-5xl flex-col justify-between gap-x-20 gap-y-10 text-center lg:text-left lg:flex-row-reverse'>
-        <img
-          src='https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp'
-          className='max-w-sm rounded-lg shadow-2xl'
-        />
+      <div className='hero-content flex-col max-w-6xl justify-between gap-x-20 gap-y-10 text-center lg:text-left lg:flex-row-reverse'>
+        <div className='stack stack-end '>
+          <img src={dashboard} className='max-w-xl rounded-lg shadow-2xl' />
+          <img src={dashboard} className='max-w-xl rounded-lg shadow-2xl' />
+          <img src={dashboard} className='max-w-xl rounded-lg shadow-2xl' />
+        </div>
         <div className=''>
           <h1 className='text-[clamp(2.5rem,6vw,4.5rem)] leading-none font-bold'>
             Powerful. Simple.

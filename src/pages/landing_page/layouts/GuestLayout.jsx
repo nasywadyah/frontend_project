@@ -21,7 +21,7 @@ const GuestLayout = ({ children }) => {
             scroll && 'bg-white'
           } z-50 transition-all`}
         >
-          <div className='navbar w-full max-w-5xl m-auto'>
+          <div className='navbar w-full max-w-6xl m-auto'>
             <div className='flex-none lg:hidden'>
               <label
                 htmlFor='my-drawer-3'
