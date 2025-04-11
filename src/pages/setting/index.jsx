@@ -1,77 +1,154 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
+import { getUser } from "../../api/user";
+import api from "../../utils/expiredApi";
+
+const SkeletonInput = () => (
+  <div className="w-full h-10 bg-gray-200 animate-pulse rounded-md" />
+);
 
 const SettingsPage = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     document.title = "BudgetIn";
+    fetchUserData();
   }, []);
 
-  const [formData, setFormData] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "johndoe@example.com",
-    phone: "+1234567890",
-    currency: "USD",
-    language: "English",
-  });
+  const fetchUserData = async () => {
+    try {
+      const user = await getUser();
+      setFormData({
+        name: user.data.name || "",
+        email: user.data.email || "",
+        phone: user.data.phone || "",
+      });
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      const token = localStorage.getItem("token");
+      await api.post(
+        "http://localhost:8000/api/profile/update",
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("Data updated successfully!");
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("Failed to update data.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <Navbar />
         <div className="max-w-screen p-6 bg-white">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Settings</h2>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Settings
+          </h2>
 
-          <div className="mt-6">
+          <div className="grid grid-cols-1 gap-4">
             <div>
-              <label className="text-gray-700 text-sm block text-left font-medium">First Name:</label>
-              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />
+              <label className="text-gray-700 text-sm block font-medium">
+                Name:
+              </label>
+              {loading ? (
+                <SkeletonInput />
+              ) : (
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-2 border rounded-md"
+                />
+              )}
             </div>
           </div>
 
           <div className="mt-4">
-            <label className="text-gray-700 text-sm block text-left font-medium">Email:</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />
+            <label className="text-gray-700 text-sm block font-medium">
+              Email:
+            </label>
+            {loading ? (
+              <SkeletonInput />
+            ) : (
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded-md"
+              />
+            )}
           </div>
 
           <div className="mt-4">
-            <label className="text-gray-700 text-sm block text-left font-medium">Phone:</label>
-            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />
-          </div>
-
-          <div className="mt-4">
-            <label className="text-gray-700 text-sm block text-left font-medium">Currency:</label>
-            <select name="currency" value={formData.currency} onChange={handleChange} className="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300">
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="IDR">IDR (Rp)</option>
-            </select>
-          </div>
-
-          <div className="mt-4">
-            <label className="text-gray-700 text-sm block text-left font-medium">Language:</label>
-            <select name="language" value={formData.language} onChange={handleChange} className="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300">
-              <option value="English">English</option>
-              <option value="Indonesian">Indonesian</option>
-              <option value="Spanish">Spanish</option>
-            </select>
+            <label className="text-gray-700 text-sm block font-medium">
+              Phone:
+            </label>
+            {loading ? (
+              <SkeletonInput />
+            ) : (
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded-md"
+              />
+            )}
           </div>
 
           <div className="mt-6">
-            <a href="/change-password" className="text-blue-600 hover:underline">
+            <a
+              href="/change-password"
+              className="text-blue-600 hover:underline"
+            >
               Change Password
             </a>
           </div>
 
-          <button className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Save Changes</button>
+          <button
+            onClick={handleSave}
+            className={`mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 ${
+              saving || loading ? "opacity-70" : ""
+            }`}
+            disabled={saving || loading}
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
         </div>
       </div>
     </div>

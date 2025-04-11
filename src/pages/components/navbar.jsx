@@ -1,8 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../api/auth";
+import { useState, useEffect } from "react";
+import { getUser } from "../../api/user";
 
-const Navbar = ({ name }) => {
+const Navbar = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    document.title = "BudgetIn";
+
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const response = await getUser();
+        setUser(response.data);
+      } catch (err) {
+        setError("Failed to fetch user data");
+        console.error("Error fetching user:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -16,12 +40,18 @@ const Navbar = ({ name }) => {
   };
 
   return (
-    <nav className="bg-blue-500 text-white p-4 shadow-md flex justify-between items-center">
-      <h1 className="text-2xl font-bold">Welcome, {name}</h1>
-      <div className="flex items-center gap-4">
+    <nav className="bg-blue-500 text-white p-4 shadow-md flex justify-between items-center flex-wrap">
+      <h1 className="text-xl md:text-2xl font-bold">
+        {loading
+          ? "Loading..."
+          : error
+          ? "Error fetching user"
+          : `Welcome, ${user?.name}`}
+      </h1>
+      <div className="flex items-center gap-4 mt-2 md:mt-0">
         <button
           onClick={handleLogout}
-          className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition"
+          className="bg-white text-blue-600 px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base rounded-lg font-semibold hover:bg-gray-200 transition"
         >
           Logout
         </button>

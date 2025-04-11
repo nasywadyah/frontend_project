@@ -1,36 +1,69 @@
 import { useState, useEffect } from "react";
-import { FiSearch, FiTrash2, FiArrowUp, FiArrowDown, FiEdit } from "react-icons/fi";
+import {
+  FiSearch,
+  FiTrash2,
+  FiArrowUp,
+  FiArrowDown,
+  FiEdit,
+} from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 
-const LogActivityPage = () => {
-  const [activities, setActivities] = useState([
-    { id: 1, type: "Isi Saldo", amount: 50000, date: "2025-01-07", status: "Sukses" },
-    { id: 2, type: "Pembelian", amount: -60000, date: "2025-02-07", status: "Gagal" },
-    { id: 3, type: "Isi Saldo dari SeaBank", amount: 50000, date: "2025-01-01", status: "Sukses" },
-    { id: 4, type: "Transaksi QRIS", amount: -12500, date: "2025-03-01", status: "Sukses" },
-    { id: 5, type: "Edit Transaksi", amount: null, date: "2025-01-26", status: "Gagal" },
-  ]);
-
+const LogActivity = () => {
+  const [activities, setActivities] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    next_page_url: null,
+    prev_page_url: null,
+  });
 
-  useEffect(() => {
-    setTimeout(() => {
+  const fetchLogs = async (page = 1) => {
+    try {
+      setIsLoadingData(true);
+      const response = await fetch(
+        `http://localhost:8000/api/logs?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+
+      setActivities(data.data || []);
+      setPagination(data.pagination || {});
+    } catch (error) {
+      console.error("Gagal memuat log aktivitas:", error);
+    } finally {
       setIsLoadingData(false);
-    }, 1500);
-  }, []);
+    }
+  };
 
-  const handleDelete = (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this activity?");
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Apakah yakin ingin menghapus log ini?");
     if (confirmed) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setActivities(activities.filter((activity) => activity.id !== id));
+      try {
+        setIsLoading(true);
+        await fetch(`http://localhost:8000/api/logs/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        });
+        fetchLogs(pagination.current_page); // reload current page
+      } catch (error) {
+        console.error("Gagal menghapus log:", error);
+      } finally {
         setIsLoading(false);
-      }, 1000);
+      }
     }
   };
 
@@ -39,49 +72,37 @@ const LogActivityPage = () => {
     return new Date(dateString).toLocaleDateString("id-ID", options);
   };
 
-  const filteredActivities = activities.filter((activity) => activity.type.toLowerCase().includes(searchTerm.toLowerCase()));
-
-  // skeleton loader components
-  const SkeletonHeader = () => (
-    <div className="animate-pulse mb-6">
-      <div className="h-7 bg-gray-200 rounded w-1/4 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-2/5"></div>
-    </div>
+  const filteredActivities = activities.filter((activity) =>
+    activity.action.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const SkeletonSearchBar = () => <div className="mb-4 h-12 bg-gray-200 rounded-lg animate-pulse"></div>;
+  useEffect(() => {
+    fetchLogs();
+  }, []);
 
-  const SkeletonActivity = ({ index }) => (
-    <motion.div key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, delay: index * 0.05 }} className="bg-gray-200 p-4 rounded-xl animate-pulse mb-4 h-20"></motion.div>
-  );
-
-  const SkeletonActivities = ({ count = 5 }) => (
-    <div className="space-y-0">
-      {Array(count)
-        .fill(0)
-        .map((_, index) => (
-          <SkeletonActivity key={index} index={index} />
-        ))}
-    </div>
-  );
+  const goToPage = (page) => {
+    fetchLogs(page);
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Navbar />
+        <Navbar name={"John Doe"} />
         <div className="p-6">
           {isLoadingData || isLoading ? (
-            <div className="animate-pulse">
-              <SkeletonHeader />
-              <SkeletonSearchBar />
-              <SkeletonActivities />
-            </div>
+            <div className="animate-pulse">Loading...</div>
           ) : (
             <>
               <div className="mb-4 flex items-center bg-white p-3 rounded-lg shadow-sm border border-gray-200">
                 <FiSearch className="text-gray-400 w-5 h-5 mr-2" />
-                <input type="text" placeholder="Search activities..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full outline-none text-gray-700" />
+                <input
+                  type="text"
+                  placeholder="Cari aktivitas..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full outline-none text-gray-700"
+                />
               </div>
               <div className="space-y-4">
                 {filteredActivities.length > 0 ? (
@@ -99,40 +120,59 @@ const LogActivityPage = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
                             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                              {activity.amount === null ? <FiEdit className="w-5 h-5" /> : activity.amount < 0 ? <FiArrowDown className="w-5 h-5" /> : <FiArrowUp className="w-5 h-5" />}
+                              <FiEdit className="w-5 h-5" />
                             </div>
                             <div>
-                              <h3 className="font-medium text-gray-800">{activity.type}</h3>
-                              <p className="text-sm text-gray-500">{formatDate(activity.date)}</p>
-                              <span className={`inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-xs font-medium ${activity.status === "Sukses" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                                {activity.status}
-                              </span>
+                              <h3 className="font-medium text-gray-800">
+                                {activity.action}
+                              </h3>
+                              <p className="text-sm text-gray-500">
+                                {formatDate(activity.created_at)}
+                              </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-6">
-                            <p className={`font-semibold ${activity.amount === null ? "text-gray-500" : activity.amount < 0 ? "text-red-500" : "text-green-500"}`}>
-                              {activity.amount !== null && activity.amount < 0 ? "-" : ""}
-                              {activity.amount !== null
-                                ? new Intl.NumberFormat("id-ID", {
-                                    style: "currency",
-                                    currency: "IDR",
-                                    minimumFractionDigits: 0,
-                                  }).format(Math.abs(activity.amount))
-                                : "-"}
-                            </p>
-                            <button onClick={() => handleDelete(activity.id)} className="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50">
-                              <FiTrash2 className="w-5 h-5" />
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => handleDelete(activity.id)}
+                            className="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
+                          >
+                            <FiTrash2 className="w-5 h-5" />
+                          </button>
                         </div>
                       </motion.div>
                     ))}
                   </AnimatePresence>
                 ) : (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-xl shadow-sm p-12 text-center">
-                    <h3 className="text-lg font-medium text-gray-800 mb-1">No activities found</h3>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="bg-white rounded-xl shadow-sm p-12 text-center"
+                  >
+                    <h3 className="text-lg font-medium text-gray-800 mb-1">
+                      Tidak ada aktivitas ditemukan
+                    </h3>
                   </motion.div>
                 )}
+              </div>
+
+              {/* Pagination */}
+              <div className="mt-6 flex justify-center items-center gap-2">
+                <button
+                  disabled={!pagination.prev_page_url}
+                  onClick={() => goToPage(pagination.current_page - 1)}
+                  className="px-3 py-1 border rounded disabled:opacity-50"
+                >
+                  Sebelumnya
+                </button>
+                <span className="text-gray-700 font-medium">
+                  Halaman {pagination.current_page} dari {pagination.last_page}
+                </span>
+                <button
+                  disabled={!pagination.next_page_url}
+                  onClick={() => goToPage(pagination.current_page + 1)}
+                  className="px-3 py-1 border rounded disabled:opacity-50"
+                >
+                  Selanjutnya
+                </button>
               </div>
             </>
           )}
@@ -142,4 +182,4 @@ const LogActivityPage = () => {
   );
 };
 
-export default LogActivityPage;
+export default LogActivity;

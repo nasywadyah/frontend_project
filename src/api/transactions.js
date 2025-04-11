@@ -3,9 +3,8 @@ import api from "../utils/expiredApi";
 
 const API_URL = "http://localhost:8000/api/transactions";
 
-
 //dapet semua data
-export const getTransactions = async () => {
+export const getTransactions = async (page = 1) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -68,10 +67,10 @@ export const updateTransaction = async (
   }
 };
 
-
 export const deleteTransaction = async (transactionId) => {
   try {
     const token = localStorage.getItem("token");
+    console.log("Menghapus transaksi ID:", transactionId);
     await api.delete(`${API_URL}/${transactionId}`, {
       headers: {
         "Content-Type": "application/json",

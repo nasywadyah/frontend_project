@@ -150,7 +150,7 @@ function Sign_Up() {
             />
 
             {errorMessage && (
-              <p className="text-red-500 mt-2">{errorMessage}</p>
+              <p className="text-red-500 mt-2 mb-2">{errorMessage}</p>
             )}
 
             <button
