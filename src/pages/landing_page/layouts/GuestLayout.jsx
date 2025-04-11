@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo/logo-blue.png';
 
 const GuestLayout = ({ children }) => {
   const [scroll, setScroll] = useState(false);
@@ -20,7 +21,7 @@ const GuestLayout = ({ children }) => {
             scroll && 'bg-white'
           } z-50 transition-all`}
         >
-          <div className='navbar w-full max-w-5xl m-auto'>
+          <div className='navbar w-full max-w-6xl m-auto'>
             <div className='flex-none lg:hidden'>
               <label
                 htmlFor='my-drawer-3'
@@ -42,9 +43,10 @@ const GuestLayout = ({ children }) => {
                 </svg>
               </label>
             </div>
-            <h4 className='text-2xl font-semibold text-blue-500 mx-2 flex-1 px-2'>
-              BudgetIn
-            </h4>
+            <div className='text-2xl font-semibold space-x-2 text-blue-500 mx-2 flex-1 px-2'>
+              <img src={logo} className='h-8' />
+              <h4>BudgetIn</h4>
+            </div>
             <div className='hidden flex-none lg:block z-50'>
               <ul className='menu menu-horizontal gap-1'>
                 {/* Navbar menu content here */}

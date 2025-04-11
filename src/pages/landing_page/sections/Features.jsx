@@ -1,4 +1,8 @@
-import ducks from '../assets/ducks.webp';
+import login from '../assets/features/login.png';
+import dashboard from '../assets/features/dashboard.jpeg';
+import category from '../assets/features/category.jpeg';
+import transactions from '../assets/features/transactions.jpeg';
+import logs from '../assets/features/logs.jpeg';
 
 const Features = () => {
   return (
@@ -9,7 +13,7 @@ const Features = () => {
         </h2>
         <div className='space-y-20 lg:space-y-36'>
           <Feature className='flex-wrap'>
-            <Image src={ducks} />
+            <Image src={dashboard} />
             <Text
               feature='Dashboard'
               slug='Track all of your transaction in one place.'
@@ -24,10 +28,10 @@ const Features = () => {
               paragraph='Effortlessly track your income and expenses to stay organized and in control of your finances.'
               keyVisual='2'
             />
-            <Image src={ducks} />
+            <Image src={transactions} />
           </Feature>
           <Feature className='flex-wrap'>
-            <Image src={ducks} />
+            <Image src={category} />
             <Text
               feature='Category'
               slug='Freely categorize your income and expenses.'
@@ -42,10 +46,10 @@ const Features = () => {
               paragraph='Track all activities with a robust logging system, ensuring detailed records, transparency, and easy monitoring of changes in real time.'
               keyVisual='4'
             />
-            <Image src={ducks} />
+            <Image src={logs} />
           </Feature>
           <Feature className='flex-wrap'>
-            <Image src={ducks} />
+            <Image src={login} />
             <Text
               feature='Google'
               slug='Sync your account with google.'
@@ -60,11 +64,7 @@ const Features = () => {
 };
 
 const Image = ({ src }) => (
-  <img
-    src={src}
-    alt='ducks'
-    className='rounded-lg w-23 md:max-w-md h-fit m-auto'
-  />
+  <img src={src} alt='features' className='rounded-lg shadow-lg md:max-w-md mx-auto ' />
 );
 
 const Text = ({ feature = '', slug = '', paragraph = '', keyVisual }) => (

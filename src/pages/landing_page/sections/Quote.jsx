@@ -1,6 +1,6 @@
 const Quote = () => {
   return (
-    <section className='grid place-content-center min-h-screen px-4'>
+    <section className='grid place-content-center h-screen md:h-96 lg:min-h-screen px-4'>
       <div>
         <h1 className='text-[clamp(2.5rem,6vw,4.5rem)] leading-none text-center font-bold text-blue-500'>
           "Take control of your money, <br /> or it will control you."
