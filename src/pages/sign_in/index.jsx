@@ -13,7 +13,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-     // navigate("/dashboard");
+      navigate("/dashboard");
     }
   }, []);
   // Set judul halaman

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Gunakan untuk redirect
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   FaUsers,
@@ -23,6 +23,7 @@ const DashboardAdmin = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [totalTransactions, setTotalTransactions] = useState(0); // ✅ TAMBAHAN
   const [categories, setCategories] = useState([]);
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,22 +42,21 @@ const DashboardAdmin = () => {
           logsResponse,
         ] = await Promise.all([
           getUsers().catch(() => ({ data: [] })),
-          getAllTransactions().catch(() => ({ data: [] })),
+          getAllTransactions().catch(() => ({ data: { data: [], total: 0 } })),
           getAllCategories().catch(() => ({ data: [] })),
           getAllLogs().catch(() => ({ data: [] })),
         ]);
 
         setUsers(usersResponse.data);
-        setTransactions(transactionsResponse.data);
+
+        // ✅ PERBAIKI AKSES DATA & TOTAL
+        setTransactions(transactionsResponse.data.data || []);
+        setTotalTransactions(transactionsResponse.data.total || 0);
+
         setCategories(categoriesResponse.data);
         setLogs(logsResponse.data);
-        console.log(
-          "Data:",
-          usersResponse.data,
-          transactionsResponse.data,
-          categoriesResponse.data,
-          logsResponse.data
-        );
+
+        console.log("Transaksi:", transactionsResponse.data); // untuk debugging
       } catch (err) {
         setError("Gagal mengambil data admin");
         console.error("Error fetching data:", err);
@@ -68,7 +68,6 @@ const DashboardAdmin = () => {
     fetchData();
   }, []);
 
-  // Jika belum login, tampilkan pesan dan redirect ke login setelah 3 detik
   useEffect(() => {
     if (error === "Belum login! Silakan login terlebih dahulu.") {
       setTimeout(() => navigate("/sign-in"), 3000);
@@ -116,7 +115,7 @@ const DashboardAdmin = () => {
               >
                 <Card
                   title="Total Transactions"
-                  amount={transactions.length}
+                  amount={totalTransactions} // ✅ GUNAKAN TOTAL DARI API
                   icon={<FaExchangeAlt className="text-white text-xl" />}
                   color="bg-green-500"
                 />
