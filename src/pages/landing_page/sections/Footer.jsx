@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo/logo-blue.png';
 
 const Footer = () => {
   return (
     <section className='bg-blue-900 text-white'>
       <footer className='footer max-w-5xl p-10 px-4 m-auto'>
         <aside>
-          <h1 className='text-5xl font-bold'>BudgetIn</h1>
+          <div className='text-5xl flex items-center gap-4 font-bold'>
+            <img src={logo} className='h-16' />
+            <h1>BudgetIn</h1>
+          </div>
           <p>
             Powerful. Simple.
             <br />
@@ -38,22 +42,28 @@ const Footer = () => {
         </nav>
         <nav>
           <h6 className='footer-title'>Developers</h6>
-          <a href='/' className='link link-hover'>
+          <a href='https://github.com/daffa-fawwaz' className='link link-hover'>
             Muhammad Daffa Ibnu Fawwazy
           </a>
-          <a href='/' className='link link-hover'>
+          <a href='https://github.com/arfabanyu' className='link link-hover'>
             Arfa Banyu Santoro
           </a>
-          <a href='/' className='link link-hover'>
+          <a
+            href='https://github.com/chaesyadestriandy'
+            className='link link-hover'
+          >
             Chaesya Alya Destriandy
           </a>
-          <a href='/' className='link link-hover'>
+          <a href='https://github.com/nasywadyah' className='link link-hover'>
             Nasywa Dyah Putri
           </a>
-          <a href='/' className='link link-hover'>
+          <a href='https://github.com/mraihanaf' className='link link-hover'>
             Muhammad Raihan Al Farizy
           </a>
-          <a href='/' className='link link-hover'>
+          <a
+            href='https://github.com/EdwardNicholas1410'
+            className='link link-hover'
+          >
             Edward Nicholas Wijaya
           </a>
         </nav>

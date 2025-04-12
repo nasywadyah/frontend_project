@@ -5,7 +5,10 @@ import { BsFillShieldLockFill } from 'react-icons/bs';
 
 const Benefits = () => {
   return (
-    <section id='benefits' className='min-h-screen relative overflow-hidden'>
+    <section
+      id='benefits'
+      className='min-h-screen md:min-h-fit lg:min-h-screen relative overflow-hidden'
+    >
       <div className='absolute aspect-square bg-gradient-to-b from-black to-transparent rounded-full top-[19rem] lg:-top-0 h-[120vh] lg:h-screen -left-1/2 lg:left-0 lg:-right-96 opacity-5' />
       <div className='max-w-5xl py-16 space-y-5 m-auto'>
         <h2 className='p-4 text-5xl font-bold text-blue-500 leading-none'>
